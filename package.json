@@ -15,7 +15,7 @@
     }
   },
   "scripts": {
-    "build": "obuild src/",
+    "prebuild": "bun run scripts/gen-version.ts",
     "dev": "obuild src/ --stub",
     "format": "biome format .",
     "lint": "biome check .",
