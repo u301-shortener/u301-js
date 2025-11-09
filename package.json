@@ -2,21 +2,22 @@
   "version": "0.0.1",
   "name": "u301",
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
       "module": "./dist/index.mjs",
-      "types": "./dist/index.d.mts"
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     }
   },
   "scripts": {
     "prebuild": "bun run scripts/gen-version.ts",
-    "dev": "obuild src/ --stub",
+    "build": "obuild src/index.ts",
     "format": "biome format .",
     "lint": "biome check .",
     "test": "bun test"
@@ -32,5 +33,9 @@
   "license": "MIT",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "ofetch": "^1.5.1",
+    "valibot": "^1.1.0"
   }
 }
