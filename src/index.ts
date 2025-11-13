@@ -31,6 +31,9 @@ export class U301 extends BaseService {
                 'Authorization': `Bearer ${options.apiKey}`,
                 'User-Agent': `u301-js/${SDK_VERSION}`,
             },
+            query: {
+                workspaceId: options.workspaceId,
+            },
             responseType: 'json',
             onRequest({ request, options }) {
                 if (!debugEnabled) return;
