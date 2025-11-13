@@ -160,6 +160,7 @@ export function toU301Error(response?: OfetchResponseLike, cause?: unknown) {
   if (status === 401) return new UnauthorizedError(message, { status, requestId, details: api, cause })
   if (status === 403) return new ForbiddenError(message, { status, requestId, details: api, cause })
   if (status === 404) return new NotFoundError(message, { status, requestId, details: api, cause })
+  if (status === 422) return new ValidationError(message, { status, requestId, details: api, cause })
   if (status === 429) return new RateLimitError(message, { status, requestId, details: api, cause })
   if (status >= 500) return new ServerError(message, { status, requestId, details: api, cause })
   return new U301Error(message, { status, requestId, details: api ?? response?._data, cause, code: (codeFromApi as U301ErrorCode) ?? 'UNKNOWN' })
