@@ -1,5 +1,6 @@
 import { ofetch } from 'ofetch';
 import { BaseService } from './base-service';
+import { toU301Error } from './errors';
 import { URLShortener } from './url-shortener';
 import { Analytics } from './analytics';
 import { SDK_VERSION } from './version';
@@ -48,11 +49,14 @@ export class U301 extends BaseService {
                 const url = typeof request === 'string' ? request : request.url;
                 console.debug(`[u301-js] <- ${response.status} ${url}`);
             },
-            onResponseError({ request, response, error }) {
-                if (!debugEnabled) return;
-                const url = typeof request === 'string' ? request : request.url;
-                const status = response?.status ?? 0;
-                console.debug(`[u301-js] x  ${status} ${url}`, { error: error?.message });
+            async onResponseError({ request, response, error }) {
+                const uerr = toU301Error(response, error)
+                if (debugEnabled) {
+                    const url = typeof request === 'string' ? request : request.url;
+                    const status = response?.status ?? 0;
+                    console.debug(`[u301-js] x  ${status} ${url} ${uerr.message}`, { error: uerr.toJSON() });
+                }
+                throw uerr
             },
         }) 
         const initializerOptions = {
@@ -68,3 +72,4 @@ export class U301 extends BaseService {
 }
 
 export { URLShortener, Analytics }
+export * from './errors'
