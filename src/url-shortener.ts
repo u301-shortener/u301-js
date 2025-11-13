@@ -58,6 +58,7 @@ export const ShortenResultItem = v.object({
     isCustomSlug: v.boolean(),
     domain: v.string(),
     isReused: v.boolean(),
+    shortLink: v.string(),
     comment: v.string()
 })
 export const ShortenErrorItem = v.object({
