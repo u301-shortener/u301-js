@@ -91,18 +91,6 @@ export interface ListParams {
      */
     page?: number
 }
-export interface URLShortenerOptions {
-    /**
-     * The API key for authentication
-     * you can get it from https://u301.com/dashboard/api-keys
-     */
-    apiKey: string;
-    /**
-     * The workspace ID, UUID v7 format
-     */
-    workspaceId: string;
-}
-
 /**
  * U301 URL Shortener Options
  * 

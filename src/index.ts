@@ -7,7 +7,14 @@ import { SDK_VERSION } from './version';
 import { Domain } from './domain';
 
 export interface U301Options {
+    /**
+     * The API key for authentication
+     * you can get it from https://u301.com/dashboard/api-keys
+     */
     apiKey: string;
+    /**
+     * The workspace ID, UUID v7 format
+     */
     workspaceId: string;
     apiVersion?: '2' | '3'
     /**
