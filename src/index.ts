@@ -4,6 +4,7 @@ import { toU301Error } from './errors';
 import { URLShortener } from './url-shortener';
 import { Analytics } from './analytics';
 import { SDK_VERSION } from './version';
+import { Domain } from './domain';
 
 export interface U301Options {
     apiKey: string;
@@ -20,6 +21,7 @@ export interface U301Options {
 export class U301 extends BaseService {
     apiVersion: U301Options['apiVersion'];
     links: URLShortener;
+    domains: Domain;
     analytics: Analytics;
     constructor(options: U301Options) {
         const apiVersion = options.apiVersion || '3';
@@ -69,6 +71,7 @@ export class U301 extends BaseService {
         }
         super(initializerOptions);
         this.apiVersion = apiVersion;
+        this.domains = new Domain(initializerOptions);
         this.links = new URLShortener(initializerOptions);
         this.analytics = new Analytics(initializerOptions);
     }
