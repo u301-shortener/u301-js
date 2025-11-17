@@ -4,7 +4,8 @@
 <p align="center">
     U301 is a URL shortener service that allows you to bind custom domains to your shortened links.
     <br />
-    <a href="https://u301.com"><strong>Home</strong></a>
+    <a href="https://u301.com"><strong>Home</strong></a> - 
+    <a href="https://u301.com/docs"><strong>Documentation</strong></a>
 </p>
 
 > [!WARNING]
@@ -14,6 +15,20 @@
 ## Installation
 
 `bun add u301`
+
+## Usage
+
+```ts
+import { U301 } from 'u301';
+
+const u301 = new U301({
+    apiKey: 'your-api-key',
+    workspaceId: 'your-workspace-id',
+});
+
+// shorten a URL
+const result = await u301.links.create('https://example.com');
+```
 
 ## License
 
