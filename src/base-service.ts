@@ -1,4 +1,4 @@
-import { $Fetch } from "ofetch"
+import type { $Fetch } from "ofetch"
 
 export type ServiceDeps = {
     apiKey: string
