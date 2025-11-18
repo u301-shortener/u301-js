@@ -6,7 +6,7 @@ import { Analytics } from './analytics';
 import { SDK_VERSION } from './version';
 import { Domain } from './domain';
 import type { ListParams, ShortenOptions, ShortenResultItem, ShortenErrorItem, ShortenResult } from './url-shortener';
-import type { DomainSchema } from './domain';
+import type { DomainSchema, DomainStatus, DomainDetails } from './domain';
 
 export interface U301Options {
     /**
@@ -88,5 +88,5 @@ export class U301 extends BaseService {
 
 export { URLShortener, Analytics, Domain }
 export type { ListParams, ShortenOptions, ShortenResultItem,
-     ShortenErrorItem, ShortenResult, DomainSchema }
+     ShortenErrorItem, ShortenResult, DomainSchema, DomainStatus, DomainDetails }
 export * from './errors'
