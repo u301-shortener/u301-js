@@ -5,7 +5,7 @@ export class Domain extends BaseService {
     apiPath = '/shorten';
 
     async list() {
-        const res = await this.fetcher(this.apiPath+'/domains', {
+        const res = await this.fetcher(this.apiPath + '/domains', {
             method: 'GET',
         });
         return v.parse(v.array(DomainSchema), res);
@@ -20,7 +20,7 @@ export class Domain extends BaseService {
      */
     async create(domain: string, opts: { randomSlugLength?: number } = { randomSlugLength: 6 }) {
         await this.fetcher<{ message: string }>(`${this.apiPath}/domains`, {
-            method: 'POST',
+            method: 'PUT',
             body: JSON.stringify({
                 domain,
                 shortCodeLength: opts.randomSlugLength,
@@ -28,23 +28,59 @@ export class Domain extends BaseService {
         })
         return true
     }
+    /**
+     * Delete a domain
+     * @param domain The domain name
+     * @returns 
+     */
+    async delete(domain: string) {
+        await this.fetcher(`${this.apiPath}/domains/${encodeURIComponent(domain)}`, {
+            method: 'DELETE',
+        })
+        return true
+    }
+    /**
+     * set random slug length
+     * @param domain 
+     * @param length 
+     * @deprecated use `setRandomCodeLength` instead
+     * @returns 
+     */
     async setSlugLength(domain: string, length: number) {
-        const res = await this.fetcher(`${this.apiPath}/domains/${encodeURIComponent(domain)}`, {
+        return this.setRandomCodeLength(domain, length)
+    }
+    /**
+     * set random short code length
+     * @param domain 
+     * @param length 
+     * @returns 
+     */
+    async setRandomCodeLength(domain: string, length: number) {
+        const res = await this.fetcher<{ success: boolean }>(`${this.apiPath}/domains/${encodeURIComponent(domain)}`, {
             method: 'PATCH',
             body: JSON.stringify({ randomCodeLength: length }),
         })
-        const parsed = v.parse(v.object({
-            message: v.string(),
+        v.parse(v.object({
+            success: v.boolean(),
         }), res)
         return true
     }
+    /**
+     * get domain details
+     * @param domain The domain name
+     * @returns The domain details
+     */
     async getDetails(domain: string): Promise<DomainDetails> {
-        const res = await this.fetcher(`${this.apiPath}/domains/${encodeURIComponent(domain)}/details`, {
+        const res = await this.fetcher(`${this.apiPath}/domains/${encodeURIComponent(domain)}`, {
             method: 'GET',
         })
         return v.parse(DomainDetailsSchema, res)
     }
-    
+    /**
+     * get domain active status
+     * @param domain The domain name
+     * @returns The domain status
+     */
     async getActiveStatus(domain: string) {
         const res = await this.fetcher(`${this.apiPath}/domains/active/${encodeURIComponent(domain)}`, {
             method: 'PATCH',
@@ -60,8 +96,8 @@ export class Domain extends BaseService {
      * @returns The domain status
      */
     async waitUntilActive(domain: string, opts: { timeoutMs?: number, pollMs?: number } = {}): Promise<DomainStatus> {
-        const timeoutMs = opts.timeoutMs ?? 120000
-        const pollMs = opts.pollMs ?? 2000
+        const timeoutMs = opts.timeoutMs ?? 30000
+        const pollMs = opts.pollMs ?? 8000
         const deadline = Date.now() + timeoutMs
         let last: DomainStatus | undefined
         while (Date.now() < deadline) {
@@ -82,12 +118,12 @@ export class Domain extends BaseService {
      * @returns The domain status
      */
     async waitForStatusChange(domain: string, opts: { timeoutMs?: number, pollMs?: number, emitInitial?: boolean } = {}): Promise<DomainStatus> {
-        const timeoutMs = opts.timeoutMs ?? 120000
-        const pollMs = opts.pollMs ?? 2000
+        const timeoutMs = opts.timeoutMs ?? 30000
+        const pollMs = opts.pollMs ?? 8000
         const emitInitial = opts.emitInitial ?? false
         const deadline = Date.now() + timeoutMs
         let last = await this.getActiveStatus(domain)
-        if (emitInitial) return last
+        if (emitInitial || last.actived) return last
         while (Date.now() < deadline) {
             await new Promise(r => setTimeout(r, pollMs))
             const next = await this.getActiveStatus(domain)
@@ -142,7 +178,7 @@ export const DomainDetailsSchema = v.object({
     domain: v.string(),
     isValid: v.boolean(),
     isArchived: v.boolean(),
-    lastCheckedAt: v.pipe(v.string(), v.isoTimestamp()),
+    lastCheckedAt: v.nullable(v.pipe(v.string(), v.isoTimestamp())),
     randomCodeLength: v.number(),
     workspaceId: v.pipe(v.string(), v.uuid()),
     homePageRedirectUrl: v.nullable(v.pipe(v.string(), v.url())),
@@ -156,7 +192,7 @@ export const DomainDetailsSchema = v.object({
         isHostedOnCloudflare: v.boolean(),
         baseDomain: v.string(),
         subdomain: v.string(),
-        domainConnectUrl:  v.nullable(v.pipe(v.string(), v.url())),
+        domainConnectUrl: v.nullable(v.pipe(v.string())),
         cloudflareAuthUrl: v.nullable(v.pipe(v.string(), v.url())),
     })
 }) satisfies v.GenericSchema<DomainDetails>
@@ -168,7 +204,7 @@ export interface DomainDetails {
      */
     isValid: boolean
     isArchived: boolean
-    lastCheckedAt: string
+    lastCheckedAt: string | null
     /**
      * The length of the random slug, 3-10
      */
