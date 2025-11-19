@@ -7,7 +7,7 @@
     <a href="https://u301.com"><strong>Home</strong></a> · 
     <a href="https://u301.com/docs"><strong>Documentation</strong></a>
 </div>
-<div align="center" style="margin-bottom: 1rem;">
+<div align="center" style="margin-top:0.5rem;margin-bottom: 1rem;">
     <a href="https://www.npmjs.com/package/u301"><img src="https://img.shields.io/npm/v/u301" alt="NPM Version"></a> <a href="https://github.com/u301-shortener/u301-js/actions/workflows/build.yml"><img src="https://github.com/u301-shortener/u301-js/actions/workflows/build.yml/badge.svg" alt="Build"></a>
 </div>
 
