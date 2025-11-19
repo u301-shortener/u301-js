@@ -1,6 +1,30 @@
 {
   "version": "0.0.5",
   "name": "u301",
+  "description": "Official U301 SDK to create branded short links, manage links, and access analytics. Built for Bun and Node with first-class TypeScript support.",
+  "homepage": "https://u301.com/docs",
+  "keywords": [
+    "u301",
+    "url shortener",
+    "short link",
+    "url shortener",
+    "url shortener api",
+    "url shortener service",
+    "url shortener tool",
+    "url shortener service",
+    "url shortener tool",
+    "url shortener service",
+    "url shortener tool"
+  ],
+  "bugs": {
+    "url": "https://github.com/u301-shortener/u301-js/issues",
+    "email": "fry@u301.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/u301-shortener/u301-js.git"
+  },
+  "author": "Fry <fry@u301.com> (http://u301.com/)",
   "type": "module",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
