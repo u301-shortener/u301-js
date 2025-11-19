@@ -1,17 +1,20 @@
 
 <h1 align="center">U301 URL Shortener JS-SDK</h1>
  
-<p align="center">
+<div align="center">
     U301 is a URL shortener service that allows you to bind custom domains to your shortened links.
     <br />
-    <a href="https://u301.com"><strong>Home</strong></a> - 
+    <a href="https://u301.com"><strong>Home</strong></a> · 
     <a href="https://u301.com/docs"><strong>Documentation</strong></a>
-</p>
+</div>
+<div align="center" style="margin-bottom: 1rem;">
+    <a href="https://www.npmjs.com/package/u301"><img src="https://img.shields.io/npm/v/u301" alt="NPM Version"></a> <a href="https://github.com/u301-shortener/u301-js/actions/workflows/build.yml"><img src="https://github.com/u301-shortener/u301-js/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+</div>
+
 
 > [!WARNING]
 > This package is ESM-only and does not support CommonJS (CJS). 
 
-![NPM Version](https://img.shields.io/npm/v/u301) [![Build](https://github.com/u301-shortener/u301-js/actions/workflows/build.yml/badge.svg)](https://github.com/u301-shortener/u301-js/actions/workflows/build.yml)
 
 ## Installation
 
