@@ -11,6 +11,7 @@
 > [!WARNING]
 > This package is ESM-only and does not support CommonJS (CJS). 
 
+![NPM Version](https://img.shields.io/npm/v/u301) [![Build](https://github.com/u301-shortener/u301-js/actions/workflows/build.yml/badge.svg)](https://github.com/u301-shortener/u301-js/actions/workflows/build.yml)
 
 ## Installation
 
