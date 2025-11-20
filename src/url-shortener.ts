@@ -29,6 +29,32 @@ export class URLShortener extends BaseService {
     }
 
     /**
+     * Get a short link by its short URL.
+     *
+     * @param shortUrl The short URL to retrieve.
+     * @returns `ShortenLink` The short link object.
+     * @throws ParseError When response shape cannot be parsed.
+     * @throws UnauthorizedError | ForbiddenError | RateLimitError | ServerError | NetworkError for request-level failures.
+     */
+    async get(shortUrl: string): Promise<ShortenLink> {
+        const result = await this.fetcher(`${this.apiPath}/${encodeURI(shortUrl)}`)
+        return v.parse(ShortenLinkSchema, result)
+    }
+
+    /**
+     * Delete a short link by its short URL.
+     *
+     * @param shortUrl The short URL to delete.
+     * @throws UnauthorizedError | ForbiddenError | RateLimitError | ServerError | NetworkError for request-level failures.
+     */
+    async delete(shortUrl: string) {
+        await this.fetcher(`${this.apiPath}/${encodeURI(shortUrl)}`, {
+            method: 'DELETE'
+        })
+        return true
+    }
+
+    /**
      * Create multiple short links in a single request.
      * Strings in inputs are treated as { url }.
      *
@@ -73,6 +99,11 @@ export class URLShortener extends BaseService {
         })
         const result = await this.fetcher<ShortenLinkList>(`${this.apiPath}/list`, {
             query: params
+        })
+        result.links.forEach(link => {
+            if (link.domainName) {
+                link.domain = link.domainName
+            }
         })
         return v.parse(schema, result)
     }
@@ -195,9 +226,11 @@ export interface ShortenErrorItem {
     message?: string
 }
 
+
 export const ShortenLinkSchema = v.object({
     id: v.pipe(v.string(), v.uuid()),
-    domainName: v.string(),
+    domainName: v.optional(v.string()),
+    domain: v.string(),
     slug: v.string(),
     isCustomSlug: v.boolean(),
     shortUrl: v.string(),
@@ -221,9 +254,15 @@ export interface ShortenLink {
     id: string
     /**
      * The domain name for the short link
+     * @deprecated use `domain` instead
      * @example u301.co
      */
-    domainName: string
+    domainName?: string
+    /**
+     * The domain name for the short link
+     * @example u301.co
+     */
+    domain: string
     /**
      * The path for the short link
      * @example abc123

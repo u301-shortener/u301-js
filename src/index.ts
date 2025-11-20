@@ -5,7 +5,10 @@ import { URLShortener } from './url-shortener';
 import { Analytics } from './analytics';
 import { SDK_VERSION } from './version';
 import { Domain } from './domain';
-import type { ListParams, ShortenOptions, ShortenResultItem, ShortenErrorItem, ShortenResult } from './url-shortener';
+import type {
+    ListParams, ShortenOptions, ShortenResultItem, ShortenErrorItem, ShortenResult,
+    ShortenLink, ShortenLinkList,
+} from './url-shortener';
 import type { DomainSchema, DomainStatus, DomainDetails } from './domain';
 
 export interface U301Options {
@@ -72,7 +75,7 @@ export class U301 extends BaseService {
                 }
                 throw uerr
             },
-        }) 
+        })
         const initializerOptions = {
             fetcher,
             apiKey: options.apiKey,
@@ -87,6 +90,9 @@ export class U301 extends BaseService {
 }
 
 export { URLShortener, Analytics, Domain }
-export type { ListParams, ShortenOptions, ShortenResultItem,
-     ShortenErrorItem, ShortenResult, DomainSchema, DomainStatus, DomainDetails }
+export type {
+    ListParams, ShortenOptions, ShortenResultItem,
+    ShortenErrorItem, ShortenResult, DomainSchema, DomainStatus, DomainDetails,
+    ShortenLink, ShortenLinkList
+}
 export * from './errors'
