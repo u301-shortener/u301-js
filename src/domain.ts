@@ -66,6 +66,23 @@ export class Domain extends BaseService {
         return true
     }
     /**
+     * update home page redirect url
+     * @param domain The domain name
+     * @param url The home page redirect url
+     * @docs https://u301.com/docs/domains/update-home-page-redirect-url
+     * @returns 
+     */
+    async updateHomePageRedirectUrl(domain: string, url: string) {
+        const res = await this.fetcher<{ success: boolean }>(`${this.apiPath}/domains/${encodeURIComponent(domain)}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ homePageRedirectUrl: url }),
+        })
+        v.parse(v.object({
+            success: v.boolean(),
+        }), res)
+        return true
+    }
+    /**
      * get domain details
      * @param domain The domain name
      * @returns The domain details

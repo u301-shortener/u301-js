@@ -1,5 +1,5 @@
 {
-  "version": "0.0.6",
+  "version": "0.0.7",
   "name": "u301",
   "description": "Official U301 SDK to create branded short links, manage links, and access analytics. Built for Bun and Node with first-class TypeScript support.",
   "homepage": "https://u301.com/docs",
