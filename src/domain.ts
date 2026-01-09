@@ -83,6 +83,23 @@ export class Domain extends BaseService {
         return true
     }
     /**
+     * update not found page redirect url
+     * @param domain The domain name
+     * @param url The 404 page redirect url
+     * @docs https://u301.com/docs/domains/update-not-found-page-redirect-url
+     * @returns 
+     */
+    async updateNotFoundPageRedirectUrl(domain: string, url: string) {
+        const res = await this.fetcher<{ success: boolean }>(`${this.apiPath}/domains/${encodeURIComponent(domain)}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ notFoundPageRedirectUrl: url }),
+        })
+        v.parse(v.object({
+            success: v.boolean(),
+        }), res)
+        return true
+    }
+    /**
      * get domain details
      * @param domain The domain name
      * @returns The domain details
