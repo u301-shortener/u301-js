@@ -2,7 +2,7 @@
 
 ### Available skills
 
-- u301-url-shortener-cli: Use the U301 CLI in this repository to log in, inspect config, create short links, manage links and domains, and query analytics. Use when requests mention U301, short links, branded links, `u301 login`, `u301 status`, link management, domain setup, or analytics. (file: ./skills/u301-url-shortener-cli/SKILL.md)
+- u301-url-shortener-cli: Help users install the `u301` package with their own package manager, then use the `u301` CLI to log in, inspect config, create short links, manage links and domains, and query analytics. Use when requests mention U301, short links, branded links, `u301 login`, `u301 status`, link management, domain setup, analytics, or CLI installation. (file: ./skills/u301-url-shortener-cli/SKILL.md)
 
 ### How to use skills
 

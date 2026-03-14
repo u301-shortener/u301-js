@@ -1,7 +1,7 @@
 interface:
   display_name: "U301 URL Shortener CLI"
   short_description: "Use the U301 CLI to manage short links"
-  default_prompt: "Use $u301-url-shortener-cli to operate the U301 CLI, check auth, create short links, and inspect domains or analytics."
+  default_prompt: "Use $u301-url-shortener-cli to install the `u301` package with the user's package manager, then operate the U301 CLI for auth, short links, domains, and analytics."
 
 policy:
   allow_implicit_invocation: true

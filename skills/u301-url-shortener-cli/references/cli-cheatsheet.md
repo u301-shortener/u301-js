@@ -4,9 +4,30 @@
 
 Use one of these forms depending on context:
 
-- Inside this repository: `bun ./dist/cli.mjs ...`
-- Inside this repository: `node ./dist/cli.mjs ...`
-- If the package is already installed on PATH: `u301 ...`
+- End-user usage after installation: `u301 ...`
+
+
+## Install
+
+Package name: `u301`
+
+Command name after install: `u301`
+
+Use the user's package manager:
+
+```bash
+npm install -g u301
+pnpm add -g u301
+yarn global add u301
+bun add -g u301
+```
+
+Verify install:
+
+```bash
+u301 version
+u301 help
+```
 
 ## Auth And Config
 
