@@ -1,5 +1,5 @@
 {
-  "version": "0.0.8",
+  "version": "0.1.0",
   "name": "u301",
   "description": "Official U301 SDK to create branded short links, manage links, and access analytics. Built for Bun and Node with first-class TypeScript support.",
   "homepage": "https://u301.com/docs",
@@ -29,6 +29,9 @@
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
+  "bin": {
+    "u301": "./dist/cli.mjs"
+  },
   "files": [
     "dist"
   ],
@@ -41,10 +44,11 @@
   },
   "scripts": {
     "prebuild": "bun run scripts/gen-version.ts",
-    "build": "obuild src/index.ts",
+    "build": "obuild src/index.ts src/cli.ts",
     "format": "biome format .",
     "lint": "biome check .",
-    "test": "bun test"
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -15,6 +15,21 @@ export const ApiErrorSchema = v.object({
 })
 export type ApiError = v.InferOutput<typeof ApiErrorSchema>
 
+const NestedApiIssueSchema = v.object({
+  path: v.optional(v.array(v.union([v.string(), v.number()]))),
+  message: v.string(),
+})
+
+const NestedApiErrorSchema = v.object({
+  success: v.optional(v.boolean()),
+  error: v.object({
+    message: v.optional(v.string()),
+    name: v.optional(v.string()),
+    issues: v.optional(v.array(NestedApiIssueSchema)),
+  }),
+})
+type NestedApiError = v.InferOutput<typeof NestedApiErrorSchema>
+
 export type U301ErrorCode =
   | 'BAD_REQUEST'
   | 'UNAUTHORIZED'
@@ -148,20 +163,32 @@ export function isU301Error(input: unknown, code?: U301ErrorCode) {
 
 type OfetchResponseLike = { status?: number; _data?: unknown }
 
+function formatNestedApiMessage(payload: NestedApiError) {
+  const nested = payload.error
+  if (nested.message) return nested.message
+  const firstIssue = nested.issues?.[0]
+  if (!firstIssue) return undefined
+  const path = firstIssue.path?.length ? `${firstIssue.path.join('.')}: ` : ''
+  return `${path}${firstIssue.message}`
+}
+
 export function toU301Error(response?: OfetchResponseLike, cause?: unknown) {
   const status = response?.status ?? 0
   const parsed = response?._data ? v.safeParse(ApiErrorSchema, response._data) : null
+  const nestedParsed = response?._data ? v.safeParse(NestedApiErrorSchema, response._data) : null
   const api = parsed && parsed.success ? parsed.output : null
-  const message = api?.message ?? (cause instanceof Error ? cause.message : 'Request error')
+  const nestedApi = nestedParsed && nestedParsed.success ? nestedParsed.output : null
+  const message = api?.message ?? (nestedApi ? formatNestedApiMessage(nestedApi) : undefined) ?? (cause instanceof Error ? cause.message : 'Request error')
   const requestId = api?.requestId
   const codeFromApi = api?.code
-  if (status === 0) return new NetworkError(message, { status, requestId, details: api ?? response?._data, cause })
-  if (status === 400) return new BadRequestError(message, { status, requestId, details: api, cause })
-  if (status === 401) return new UnauthorizedError(message, { status, requestId, details: api, cause })
-  if (status === 403) return new ForbiddenError(message, { status, requestId, details: api, cause })
-  if (status === 404) return new NotFoundError(message, { status, requestId, details: api, cause })
-  if (status === 422) return new ValidationError(message, { status, requestId, details: api, cause })
-  if (status === 429) return new RateLimitError(message, { status, requestId, details: api, cause })
-  if (status >= 500) return new ServerError(message, { status, requestId, details: api, cause })
-  return new U301Error(message, { status, requestId, details: api ?? response?._data, cause, code: (codeFromApi as U301ErrorCode) ?? 'UNKNOWN' })
+  const details = api ?? nestedApi ?? response?._data
+  if (status === 0) return new NetworkError(message, { status, requestId, details, cause })
+  if (status === 400) return new BadRequestError(message, { status, requestId, details, cause })
+  if (status === 401) return new UnauthorizedError(message, { status, requestId, details, cause })
+  if (status === 403) return new ForbiddenError(message, { status, requestId, details, cause })
+  if (status === 404) return new NotFoundError(message, { status, requestId, details, cause })
+  if (status === 422) return new ValidationError(message, { status, requestId, details, cause })
+  if (status === 429) return new RateLimitError(message, { status, requestId, details, cause })
+  if (status >= 500) return new ServerError(message, { status, requestId, details, cause })
+  return new U301Error(message, { status, requestId, details, cause, code: (codeFromApi as U301ErrorCode) ?? 'UNKNOWN' })
 }

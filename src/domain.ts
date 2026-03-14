@@ -18,12 +18,13 @@ export class Domain extends BaseService {
      * @param opts.randomSlugLength The length of the random slug, 3-10
      * @returns The domain status
      */
-    async create(domain: string, opts: { randomSlugLength?: number } = { randomSlugLength: 6 }) {
+    async create(domain: string, opts: { randomSlugLength?: number } = {}) {
+        const randomSlugLength = opts.randomSlugLength ?? 6
         await this.fetcher<{ message: string }>(`${this.apiPath}/domains`, {
             method: 'PUT',
             body: JSON.stringify({
                 domain,
-                shortCodeLength: opts.randomSlugLength,
+                shortCodeLength: randomSlugLength,
             }),
         })
         return true
